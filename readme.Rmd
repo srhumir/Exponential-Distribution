@@ -1,0 +1,40 @@
+---
+title: "Checking CLT via exponential samples"
+author: "Reza"
+date: "April 14, 2016"
+output: pdf_document
+---
+
+#Overview
+In this report we will validate the central limite theorem (CLT) via a huge random sample of exponential distribution. Briefly we will investighate the distribution of means of ramdom samples of an exponntial distribution and compare it to the normal distribution.
+
+#Simulation
+First let us simulate 1000 simulations of exponetial samples each having 40 elements with $\lambda$ equal $.2$. Recal that  the mean of exponential distribution is $1/\lambda$ and the standard deviation is also $1/\lambda$.
+
+I simulated 40000 values and then arranged then in a 1000x40 matrix to have 1000 sapmles each of 40 values.
+
+```{r}
+#simulate 40000 of exponential distributions
+set.seed(200)
+exp <- rexp(40000, .2)
+#arranhe them in 1000 samples each of quatity 40
+expmat <- matrix(exp, 1000, 40)
+```
+#Sample mean vs. the theoretical mean
+In this section we will examine if the sample mean and compare it to the distribution mean which is 5. First compute the means of samples.
+```{r}
+means <- apply(expmat, 1, mean)
+```
+The mean of means is equal ```r round(mean(means), digits = 3)```, quite close to expected mean 5.
+Now let's look at boxplot of means.
+```{r, echo=F}
+boxplot(means,horizontal = T)
+title(main = "Means of samples", xlab = "Sample means")
+```
+It is centered around 5 with half of the numbers between ```r round(quantile(means)[c(2,4)], digits = 2)```
+
+Finally runnig a $t$-test one can see that the $95\%$ confidence interval is (```r round(t.test(means)$conf, digits = 3)```) aparently containg 5 the distribution's mean.
+
+#Sample variance vs. the theoretical variance
+One can do similar test dine in the last section on 
+#Distribution
