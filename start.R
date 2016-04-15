@@ -18,12 +18,18 @@ sdmeans <- sd(means)
 mean(vars)
 hist(means)
 
-x <- seq(2, 8, length=100)
-hx <- dnorm(x, mean = 5) * 250/.4
-lines(x,hx, type = "l", col = "blue", lwd = 2)
+
+z <- (means-5)/(5/sqrt(40))
+hist(z , freq = F)
+y <- seq(-15, 15, length=100)
+hy <- dnorm(y)
+lines(y,hy, type = "l", col = "blue", lwd = 2)
 
 hist(rexp(1000, .2))
-hist(means)
+hist(means, freq = F, xlim = c(2,8))
+x <- seq(2, 8, length=300)
+hx <- dnorm(x, mean = 5, sd = 5/sqrt(40))
+lines(x,hx, type = "l", col = "blue", lwd = 2)
 
 round(c(quantile(means,.25),quantile(means,.75)), digits = 2)
 round(quantile(means)[2:3], digits = 2)

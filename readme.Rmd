@@ -6,7 +6,7 @@ output: pdf_document
 ---
 
 #Overview
-In this report we will validate the central limit theorem (CLT) via a huge random sample of exponential distribution. Briefly we will investigate the distribution of means of random samples of an exponential distribution and compare it to the normal distribution.
+In this report we will validate the law of large numbers and  central limit theorem (CLT) via a huge random sample of exponential distribution.
 
 #Simulation
 First let us simulate 1000 simulations of exponential samples each having 40 elements with $\lambda$ equal $.2$. Recall that  the mean of exponential distribution is $1/\lambda$ and the standard deviation is also $1/\lambda$.
@@ -14,10 +14,10 @@ First let us simulate 1000 simulations of exponential samples each having 40 ele
 I simulated 40000 values and then arranged then in a 1000x40 matrix to have 1000 samples each of 40 values.
 
 ```{r}
-#simulate 40000 of exponential distributions
+#simulating 40000 of exponential distributions
 set.seed(200)
 exp <- rexp(40000, .2)
-#arranhe them in 1000 samples each of quatity 40
+#arraging them in 1000 samples each of quantity 40
 expmat <- matrix(exp, 1000, 40)
 ```
 #Sample mean vs. the theoretical mean
@@ -26,13 +26,12 @@ In this section we will examine if the sample mean and compare it to the distrib
 means <- apply(expmat, 1, mean)
 ```
 The mean of means is equal $`r round(mean(means), digits = 3)`$, quite close to expected mean $5$.
-Now let's look at boxplot of means.
-```{r, echo=F}
+Now let's look at boxplot of means. It is centered around $`r round(median(means),digits = 2)`$ with half of the numbers between $`r round(quantile(means,.25), digits =2)`$ and $`r round(quantile(means,.75), digits =2)`$
+
+```{r, echo=F, fig.width=10, fig.height=4}
 boxplot(means,horizontal = T)
 title(main = "Means of samples", xlab = "Sample means")
 ```
-It is centered around 5 with half of the numbers between $`r round(quantile(means)[c(2,4)], digits = 2)`$
-
 Finally running a $t$-test one can see that the $95\%$ confidence interval is $(`r round(t.test(means)$conf, digits = 3)`)$ apparently containing $5$ the distribution's mean.
 
 #Sample variance vs. the theoretical variance
@@ -44,7 +43,7 @@ vars <- apply(expmat, 1, var)
 The average variance is $`r round(mean(vars), digits = 3)`$ quite close to $25$.
 Now drawing a boxplot of sample variances.
 
-```{r, echo=F}
+```{r, echo=F, fig.width=10, fig.height=4}
 boxplot(vars,horizontal = T)
 title(main = "Variance of samples", xlab = "Sample variances")
 ```
@@ -54,3 +53,16 @@ Not that far from the expected value of $25$.
 Finally let's see the $95\%$ $t$-confidence interval. It is $(`r round(t.test(vars)$conf, digits =2)`)$, $25$ is in it so the sample's variance is a good approximation of the distribution variance.
 
 #Distribution
+In this section we will test the CLT. i.e. we are going to see if the sample means actually obey a normal distribution. Recall that CLT states that as the number of samples tends to infinity the distribution of means of iid samples tends to be $N(\mu, \sigma^2/\sqrt(n))$ where $\mu$ and $\sigma$ are sample mean and standard deviation and $n$ the sample size. In our case $\mu = \sigma = 5$ and $n = 40$. So by the CLT we expect sample means to be almost normally distributed with mean $5$ and standard deviation $0.79$.
+
+Let's compare the plot of means and normal distribution.
+
+```{r echo = T}
+hist(means, freq = F, xlim = c(2,8), main = "")
+x <- seq(2, 8, length=300)
+hx <- dnorm(x, mean = 5, sd = 5/sqrt(40))
+lines(x,hx, type = "l", col = "blue", lwd = 3)
+title(main = "Histogram of sample means")
+```
+
+As you can see the plot of our samples' mean acceptingly matches the normal distribution which is drawn in blue.
