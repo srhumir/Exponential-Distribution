@@ -8,6 +8,8 @@ output: pdf_document
 #Overview
 In this report we will validate the law of large numbers and  central limit theorem (CLT) via a huge random sample of exponential distribution.
 
+In the first sections we will produce 1000 samples of exponentially distributed values each of size 40. In the second and third sections we will compare the mean and variance of the samples to the mean and variance of the distribution. Finally in the fourth section, we will investigate the distribution of means of random samples of an exponential distribution and compare it to the normal distribution to check whether CLT is true.
+
 #Simulation
 First let us simulate 1000 simulations of exponential samples each having 40 elements with $\lambda$ equal $.2$. Recall that  the mean of exponential distribution is $1/\lambda$ and the standard deviation is also $1/\lambda$.
 
