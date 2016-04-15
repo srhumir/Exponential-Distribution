@@ -6,12 +6,12 @@ output: pdf_document
 ---
 
 #Overview
-In this report we will validate the central limite theorem (CLT) via a huge random sample of exponential distribution. Briefly we will investighate the distribution of means of ramdom samples of an exponntial distribution and compare it to the normal distribution.
+In this report we will validate the central limit theorem (CLT) via a huge random sample of exponential distribution. Briefly we will investigate the distribution of means of random samples of an exponential distribution and compare it to the normal distribution.
 
 #Simulation
-First let us simulate 1000 simulations of exponetial samples each having 40 elements with $\lambda$ equal $.2$. Recal that  the mean of exponential distribution is $1/\lambda$ and the standard deviation is also $1/\lambda$.
+First let us simulate 1000 simulations of exponential samples each having 40 elements with $\lambda$ equal $.2$. Recall that  the mean of exponential distribution is $1/\lambda$ and the standard deviation is also $1/\lambda$.
 
-I simulated 40000 values and then arranged then in a 1000x40 matrix to have 1000 sapmles each of 40 values.
+I simulated 40000 values and then arranged then in a 1000x40 matrix to have 1000 samples each of 40 values.
 
 ```{r}
 #simulate 40000 of exponential distributions
@@ -21,20 +21,36 @@ exp <- rexp(40000, .2)
 expmat <- matrix(exp, 1000, 40)
 ```
 #Sample mean vs. the theoretical mean
-In this section we will examine if the sample mean and compare it to the distribution mean which is 5. First compute the means of samples.
+In this section we will examine if the sample mean and compare it to the distribution mean which is $5$. First compute the means of samples.
 ```{r}
 means <- apply(expmat, 1, mean)
 ```
-The mean of means is equal ```r round(mean(means), digits = 3)```, quite close to expected mean 5.
+The mean of means is equal $`r round(mean(means), digits = 3)`$, quite close to expected mean $5$.
 Now let's look at boxplot of means.
 ```{r, echo=F}
 boxplot(means,horizontal = T)
 title(main = "Means of samples", xlab = "Sample means")
 ```
-It is centered around 5 with half of the numbers between ```r round(quantile(means)[c(2,4)], digits = 2)```
+It is centered around 5 with half of the numbers between $`r round(quantile(means)[c(2,4)], digits = 2)`$
 
-Finally runnig a $t$-test one can see that the $95\%$ confidence interval is (```r round(t.test(means)$conf, digits = 3)```) aparently containg 5 the distribution's mean.
+Finally running a $t$-test one can see that the $95\%$ confidence interval is $(`r round(t.test(means)$conf, digits = 3)`)$ apparently containing $5$ the distribution's mean.
 
 #Sample variance vs. the theoretical variance
-One can do similar test dine in the last section on 
+One can do similar test done in the last section on the variance of the samples. Note that the expected variance is $25$.
+Fist we compute the samples variances.
+```{r}
+vars <- apply(expmat, 1, var)
+```
+The average variance is $`r round(mean(vars), digits = 3)`$ quite close to $25$.
+Now drawing a boxplot of sample variances.
+
+```{r, echo=F}
+boxplot(vars,horizontal = T)
+title(main = "Variance of samples", xlab = "Sample variances")
+```
+It can be seen that the plot is centered at $`r round(quantile(vars, .5), digits = 2)`$ with half of the data between $`r round(quantile(vars, c(.25,.75)), digits = 2)`$. 
+Not that far from the expected value of $25$.
+
+Finally let's see the $95\%$ $t$-confidence interval. It is $(`r round(t.test(vars)$conf, digits =2)`)$, $25$ is in it so the sample's variance is a good approximation of the distribution variance.
+
 #Distribution
