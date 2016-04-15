@@ -1,5 +1,5 @@
 ---
-title: "Checking CLT via exponential samples"
+title: "Checking law of large numbers CLT via exponential samples"
 author: "Reza"
 date: "April 14, 2016"
 output: pdf_document
